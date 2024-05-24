@@ -90,7 +90,7 @@ do -- Ui
                     for i,ID in GetEquippedPets() do
                         for _,String in Defaults.Settings do -- Check Settings
                             if String == "Shiny" then
-                                UseTreat(ID, "Golden Cherry", 1, 100)
+                                UseTreat(ID, "Golden Cherry", 100, 1)
                             elseif String == "Max Level" then
                                 UseTreat(ID, "Knowledge Scroll", 1, 25)
                             elseif String == "Use Runes" then
@@ -100,7 +100,7 @@ do -- Ui
                             elseif String == "Prismatic Scroll" then
                                 UseTreat(ID, "Prismatic Scroll", 1, 1)
                             elseif String == "Magic Pendants" then
-                                UseTreat(ID, "Magic Pendant", 1, 100)
+                                UseTreat(ID, "Magic Pendant", 100, 1)
                             end
                         end
                     end
@@ -108,7 +108,7 @@ do -- Ui
                     for i,ID in GetPagePets() do
                         for _,String in Defaults.Settings do -- Check Settings
                             if String == "Shiny" then
-                                UseTreat(ID, "Golden Cherry", 1, 100)
+                                UseTreat(ID, "Golden Cherry", 100, 1)
                             elseif String == "Max Level" then
                                 UseTreat(ID, "Knowledge Scroll", 1, 25)
                             elseif String == "Use Runes" then
@@ -118,7 +118,7 @@ do -- Ui
                             elseif String == "Prismatic Scroll" then
                                 UseTreat(ID, "Prismatic Scroll", 1, 1)
                             elseif String == "Magic Pendants" then
-                                UseTreat(ID, "Magic Pendant", 1, 100)
+                                UseTreat(ID, "Magic Pendant", 100, 1)
                             end
                         end
                     end
