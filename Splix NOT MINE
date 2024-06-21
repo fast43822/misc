@@ -137,6 +137,7 @@ function library:new(props)
 	local font = props.font or props.Font or "RobotoMono"
 	local name = props.name or props.Name or props.UiName or props.Uiname or props.uiName or props.username or props.Username or props.UserName or props.userName or "new ui"
 	local color = props.color or props.Color or props.mainColor or props.maincolor or props.MainColor or props.Maincolor or props.Accent or props.accent or Color3.fromRGB(225, 58, 81)
+	local size = props.size or props.Size or UDim2.new(0, 600, 0, 790)
 	-- // variables
 	local window = {}
 	-- // main
@@ -150,10 +151,7 @@ function library:new(props)
 			Parent = cre
 		}
 	)
-	--
-        if (check_exploit == "Synapse" and syn.request) then
-	syn.protect_gui(screen)
-        end
+
 	-- 1
 	local outline = utility.new(
 		"Frame",
