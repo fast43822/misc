@@ -187,7 +187,7 @@ local Library = {
 		[Enum.UserInputType.MouseButton3] = "MB3"
 	};
 	Connections = {};
-	FontFace = Font.new("rbxasset://fonts/families/RobotoMono.json", Enum.FontWeight.Regular);
+	Font = Font.new("rbxasset://fonts/families/RobotoMono.json", Enum.FontWeight.Regular);
 	FontSize = 14;
 	Notifs = {};
 	KeyList = nil;
