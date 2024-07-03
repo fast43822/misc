@@ -1,4 +1,4 @@
--- a
+-- b
 
 local Library = {};
 local Library = {
@@ -258,6 +258,107 @@ local Visuals = {
 		}
 	},
 }
+
+
+local sfx = {["Bameware"] = "16910460773",["Skeet"] = "4753603610",["Bonk"] = "3765689841",["Lazer Beam"] = "130791043",["Windows XP Error"] = "160715357",["TF2 Hitsound"] = "3455144981",["TF2 Critical"] = "296102734",["TF2 Bat"] = "3333907347",['Bow Hit'] = "1053296915",['Bow'] = "3442683707",['OSU'] = "7147454322",['Minecraft Hit'] = "4018616850",['Steve'] = "5869422451",['1nn'] = "7349055654",['Rust'] = "3744371091",["TF2 Pan"] = "3431749479",["Neverlose"] = "8679627751",["Mario"] = "5709456554",};
+local sfx_names = {"Bameware", "Skeet", "Bonk", "Lazer Beam", "Windows XP Error", "TF2 Hitsound", "TF2 Critical", "TF2 Bat", "Bow Hit", "Bow", "OSU", "Minecraft Hit", "Steve", "1nn", "Rust", "TF2 Pan", "Neverlose", "Mario"};
+local LocalPlayer = Players.LocalPlayer; 
+local Mouse = LocalPlayer:GetMouse();
+local Camera = Workspace.Camera;
+local viewportSize = game.Workspace.Camera.ViewportSize;
+local Offset = game:GetService("GuiService"):GetGuiInset().Y;
+local NotifiactionSGui = Instance.new("ScreenGui", game.CoreGui); NotifiactionSGui.Enabled = true
+local NewVector2 = Vector2.new;
+local NewVector3 = Vector3.new;
+local NewCFrame = CFrame.new; 
+local Angle = CFrame.Angles; 
+local NewHex = Color3.fromHex;
+local Floor = math.floor;
+local Random = math.random; 
+local Find = table.find;
+local Round = math.round;
+local Cos = math.cos;
+local Sin = math.sin;
+local Rad = math.rad; 
+local Clamp = math.clamp; 
+local Ceil = math.ceil; 
+local Pi = math.pi;
+local Sqrt = math.sqrt;
+local Lighting_Save = {["ColorShift_Bottom"] = Lighting.ColorShift_Bottom, ["Ambient"]=Lighting.Ambient, ["OutdoorAmbient"]=Lighting.OutdoorAmbient, ["ColorShift_Top"]=Lighting.ColorShift_Top, ["FogColor"]=Lighting.FogColor, ["FogEnd"]=Lighting.FogEnd, ["FogStart"]=Lighting.FogStart, ["ClockTime"]=Lighting.ClockTime, ["Brightness"]=Lighting.Brightness}
+local bodyClone = game:GetObjects("rbxassetid://8246626421")[1]; bodyClone.Humanoid:Destroy(); bodyClone.Head.Face:Destroy(); bodyClone.Parent = game.Workspace; bodyClone.HumanoidRootPart.Velocity = Vector3.new(); bodyClone.HumanoidRootPart.CFrame = NewCFrame(9999,9999,9999); bodyClone.HumanoidRootPart.Transparency = 1; bodyClone.HumanoidRootPart.CanCollide = false 
+local IgnoreList = {};
+local Tween = {};
+local crosshair_Lines = {}; 
+local crosshair_Outlines = {}; 
+local C_Desync = {Enabled = false, OldPosition = nil, PredictedPosition = nil};
+local connections = {};
+local highlights = {};
+local Dropdowns = {}; 
+local Pickers = {}; 
+local VisValues = {}; 
+local Typing = false; 
+local aimAssistTarget; 
+local checks; 
+local prediction; 
+local partClosest; 
+local antiCheattick = 0; 
+local CursorSize = 0; 
+local statsTick = 0;
+local crosshair_LineAmount = 4;
+local crosshair_SpinAngle = 0; 
+local crosshair_tick = 0;
+local buying = false; 
+local Path = 
+	"https://raw.githubusercontent.com/fortniteisveryepic/assets/main/"
+local images = {
+	["[AK47]"] = game:HttpGet(Path.. "ak.png"),
+	["[AR]"] = game:HttpGet(Path.. "ar.png"),
+	["[AUG]"] = game:HttpGet(Path.. "aug.png"),
+	["[Double-Barrel SG]"] = game:HttpGet(Path.. "db.png"),
+	["[DrumGun]"] = game:HttpGet(Path.. "drumgun.png"),
+	["[Flamethrower]"] = game:HttpGet(Path.. "flame.png"),
+	["[Glock]"] = game:HttpGet(Path.. "glock.png"),
+	["[LMG]"] = game:HttpGet(Path.. "lmg.png"),
+	["[P90]"]= game:HttpGet(Path.. "p90.png"),
+	["[Revolver]"] = game:HttpGet(Path.. "rev.png"),
+	["[SMG]"] = game:HttpGet(Path.. "smg.png"),
+	["[Shotgun]"] = game:HttpGet(Path.. "shotgun.png"),
+	["[SilencerAR]"] = game:HttpGet(Path.. "ar.png"),
+	["[TacticalShotgun]"] = game:HttpGet(Path.. "tac.png"),
+	["[Knife]"] = game:HttpGet(Path.. "knife.png"),
+	["[Rifle]"] = game:HttpGet(Path.. "rifle.png")
+} 
+local Languages = {
+    A = {English = "A", Arabic = "أ", Albanian = "A", Japanese = "あ", Spanish = "A", Russian = "А", Chinese = "阿", Urdu = "ا", French = "A", Portuguese = "A", Hindi = "अ"},
+    B = {English = "B", Arabic = "ب", Albanian = "B", Japanese = "い", Spanish = "B", Russian = "Б", Chinese = "波", Urdu = "ب", French = "B", Portuguese = "B", Hindi = "ब"},
+    C = {English = "C", Arabic = "ت", Albanian = "C", Japanese = "う", Spanish = "C", Russian = "Ц", Chinese = "西", Urdu = "س", French = "C", Portuguese = "C", Hindi = "स"},
+    D = {English = "D", Arabic = "د", Albanian = "D", Japanese = "え", Spanish = "D", Russian = "Д", Chinese = "德", Urdu = "ڈ", French = "D", Portuguese = "D", Hindi = "ड"},
+    E = {English = "E", Arabic = "إ", Albanian = "E", Japanese = "お", Spanish = "E", Russian = "Е", Chinese = "俄", Urdu = "اے", French = "E", Portuguese = "E", Hindi = "ए"},
+    F = {English = "F", Arabic = "ف", Albanian = "F", Japanese = "か", Spanish = "F", Russian = "Ф", Chinese = "夫", Urdu = "ف", French = "F", Portuguese = "F", Hindi = "फ"},
+    G = {English = "G", Arabic = "ج", Albanian = "G", Japanese = "き", Spanish = "G", Russian = "Г", Chinese = "吉", Urdu = "ج", French = "G", Portuguese = "G", Hindi = "ग"},
+    H = {English = "H", Arabic = "ح", Albanian = "H", Japanese = "く", Spanish = "H", Russian = "Х", Chinese = "艾尺", Urdu = "ح", French = "H", Portuguese = "H", Hindi = "ह"},
+    I = {English = "I", Arabic = "ي", Albanian = "I", Japanese = "け", Spanish = "I", Russian = "И", Chinese = "伊", Urdu = "آئی", French = "I", Portuguese = "I", Hindi = "इ"},
+    J = {English = "J", Arabic = "ج", Albanian = "J", Japanese = "こ", Spanish = "J", Russian = "Й", Chinese = "杰", Urdu = "جے", French = "J", Portuguese = "J", Hindi = "ज"},
+    K = {English = "K", Arabic = "ك", Albanian = "K", Japanese = "さ", Spanish = "K", Russian = "К", Chinese = "开", Urdu = "کے", French = "K", Portuguese = "K", Hindi = "क"},
+    L = {English = "L", Arabic = "ل", Albanian = "L", Japanese = "し", Spanish = "L", Russian = "Л", Chinese = "艾勒", Urdu = "ل", French = "L", Portuguese = "L", Hindi = "ल"},
+    M = {English = "M", Arabic = "م", Albanian = "M", Japanese = "す", Spanish = "M", Russian = "М", Chinese = "艾马", Urdu = "م", French = "M", Portuguese = "M", Hindi = "म"},
+    N = {English = "N", Arabic = "ن", Albanian = "N", Japanese = "せ", Spanish = "N", Russian = "Н", Chinese = "艾娜", Urdu = "ن", French = "N", Portuguese = "N", Hindi = "न"},
+    O = {English = "O", Arabic = "أو", Albanian = "O", Japanese = "そ", Spanish = "O", Russian = "О", Chinese = "哦", Urdu = "او", French = "O", Portuguese = "O", Hindi = "ओ"},
+    P = {English = "P", Arabic = "ب", Albanian = "P", Japanese = "た", Spanish = "P", Russian = "П", Chinese = "屁", Urdu = "پ", French = "P", Portuguese = "P", Hindi = "प"},
+    Q = {English = "Q", Arabic = "ق", Albanian = "Q", Japanese = "ち", Spanish = "Q", Russian = "К", Chinese = "丘", Urdu = "ق", French = "Q", Portuguese = "Q", Hindi = "क्यू"},
+    R = {English = "R", Arabic = "ر", Albanian = "R", Japanese = "つ", Spanish = "R", Russian = "Р", Chinese = "艾儿", Urdu = "ر", French = "R", Portuguese = "R", Hindi = "र"},
+    S = {English = "S", Arabic = "س", Albanian = "S", Japanese = "て", Spanish = "S", Russian = "С", Chinese = "艾丝", Urdu = "س", French = "S", Portuguese = "S", Hindi = "एस"},
+    T = {English = "T", Arabic = "ت", Albanian = "T", Japanese = "と", Spanish = "T", Russian = "Т", Chinese = "提", Urdu = "ٹ", French = "T", Portuguese = "T", Hindi = "ट"},
+    U = {English = "U", Arabic = "أو", Albanian = "U", Japanese = "な", Spanish = "U", Russian = "У", Chinese = "优", Urdu = "یو", French = "U", Portuguese = "U", Hindi = "यू"},
+    V = {English = "V", Arabic = "ف", Albanian = "V", Japanese = "に", Spanish = "V", Russian = "В", Chinese = "维", Urdu = "وی", French = "V", Portuguese = "V", Hindi = "व"},
+    W = {English = "W", Arabic = "و", Albanian = "W", Japanese = "ぬ", Spanish = "W", Russian = "В", Chinese = "豆贝尔维", Urdu = "ڈبلیو", French = "W", Portuguese = "W", Hindi = "डब्ल्यू"},
+    X = {English = "X", Arabic = "إكس", Albanian = "X", Japanese = "ね", Spanish = "X", Russian = "Х", Chinese = "艾克斯", Urdu = "اکس", French = "X", Portuguese = "X", Hindi = "एक्स"},
+    Y = {English = "Y", Arabic = "ي", Albanian = "Y", Japanese = "の", Spanish = "Y", Russian = "У", Chinese = "伊儿", Urdu = "وائی", French = "Y", Portuguese = "Y", Hindi = "वाई"},
+    Z = {English = "Z", Arabic = "ز", Albanian = "Z", Japanese = "は", Spanish = "Z", Russian = "З", Chinese = "贼德", Urdu = "زیڈ", French = "Z", Portuguese = "Z", Hindi = "जेड"}
+}
+local utx = {} 
+local Messages = {}
+local drawingCache = {} 
 
 Library.__index = Library;
 Library.Pages.__index = Library.Pages;
